@@ -1,0 +1,10 @@
+{
+    "name": "truffle-project",
+    "version": "0.1.0",
+    "description": "Truffle project with SimpleStorage contract",
+    "scripts": {
+      "migrate": "cd truffle && truffle migrate && cd ..",
+      "dev" : "cd client && npm run start && cd .."
+    }
+  }
+  
