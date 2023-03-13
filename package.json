@@ -3,8 +3,14 @@
     "version": "0.1.0",
     "description": "Truffle project with SimpleStorage contract",
     "scripts": {
-      "migrate": "cd truffle && truffle migrate && cd ..",
-      "dev" : "cd client && npm run start && cd .."
+        "migrate": "cd truffle && truffle migrate --network development && cd ..",
+        "dev": "cd client && npm run start && cd ..",
+        "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.8.2"
+    },
+    "devDependencies": {
+        "@digix/doxity": "^0.5.2"
     }
-  }
-  
+}

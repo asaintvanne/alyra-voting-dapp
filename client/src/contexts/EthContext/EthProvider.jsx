@@ -8,10 +8,15 @@ function EthProvider({ children }) {
 
   const init = useCallback(
     async artifact => {
+      console.log("init");
+      console.log(artifact)
       if (artifact) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
+        console.log(accounts)
+        console.log(networkID)
+        console.log(artifact.networks);
         const { abi } = artifact;
         let address, contract;
         try {
@@ -20,9 +25,12 @@ function EthProvider({ children }) {
         } catch (err) {
           console.error(err);
         }
+        let workflowStatus =  await contract.methods.workflowStatus().call({ from: accounts[0] });
+        let owner =  await contract.methods.owner().call({ from: accounts[0] });
+
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract }
+          data: { artifact, web3, accounts, networkID, contract,workflowStatus,owner }
         });
       }
     }, []);
@@ -30,7 +38,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/SimpleStorage.json");
+        const artifact = require("../../contracts/Voting.json");
         init(artifact);
       } catch (err) {
         console.error(err);
