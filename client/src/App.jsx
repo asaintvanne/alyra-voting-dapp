@@ -2,6 +2,7 @@ import { EthProvider } from "./contexts/EthContext";
 import Intro from "./components/Intro/";
 import Setup from "./components/Setup";
 import {Demo} from "./components/Demo";
+import {VoterPart} from "./components/VoterPart";
 import Footer from "./components/Footer";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
          
          
           <Demo />
+          <VoterPart />
          
         </div>
       </div>
