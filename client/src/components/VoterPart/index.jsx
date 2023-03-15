@@ -1,23 +1,24 @@
 import useEth from "../../contexts/EthContext/useEth";
+import { useState } from "react";
 import VoterAction from "./VoterAction";
 import NoRegisteredVoter from "./NoRegisteredVoter";
 
 export const VoterPart = () => {
   const { state: { contract, accounts } } = useEth();
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const isVoterRegistered = async () => {
-    let isRegistered = false;
     try {
       const voter = await contract.methods.getVoter(accounts[0]).call({ from: accounts[0] });
-      isRegistered = voter.isRegistered;
+      setIsRegistered(voter.isRegistered);
     } catch (error) {
-      console.log();
+      console.log(error);
     }
 
     return isRegistered;
   };
 
-  const isRegistered = isVoterRegistered();
+  isVoterRegistered();
    
   return (
     <>

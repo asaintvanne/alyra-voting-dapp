@@ -1,7 +1,7 @@
 function NoRegisteredVoter() {
     return (
       <>
-        Voter is not registered
+        You are not registered
       </>
     );
   }

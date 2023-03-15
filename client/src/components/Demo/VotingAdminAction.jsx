@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
-
-export const RegisteringVoters = 0;
-export const ProposalsRegistrationStarted = 1;
-export const ProposalsRegistrationEnded = 2;
-export const VotingSessionStarted = 3;
-export const VotingSessionEnded = 4;
-
+import * as WorflowStatus from "../models/WorflowStatus";
 
 export const  VotingAdminAction = () => {
   const { state: { contract, accounts,workflowStatus } } = useEth();
@@ -56,29 +50,38 @@ export const  VotingAdminAction = () => {
     await contract.methods.endVotingSession().send({ from: accounts[0] });
   }
 
+  const tallyVotes = async () => {
+    await contract.methods.tallyVotes().send({ from: accounts[0] });
+  }
+
   return (
     <div className="btns">
-      {currentStatus == RegisteringVoters && (
+      {currentStatus == WorflowStatus.RegisteringVoters && (
     
-      <div className="btn" onClick={() =>  startProposalsRegistering()}>Démarrer la phase de propostions</div>
+      <div className="btn" onClick={startProposalsRegistering}>Démarrer la phase de propositions</div>
       )}
-      {currentStatus == ProposalsRegistrationStarted && (
+
+      {currentStatus == WorflowStatus.ProposalsRegistrationStarted && (
       <>
-      <div className="btn" onClick={() =>  endProposalsRegistering()}>Terminer la phase de propostions</div>
+      <div className="btn" onClick={endProposalsRegistering}>Terminer la phase de propositions</div>
       </>)}
 
-      {currentStatus == ProposalsRegistrationEnded && (
+      {currentStatus == WorflowStatus.ProposalsRegistrationEnded && (
      
-      <div className="btn" onClick={() =>  startVotingSession()}>Démarrer la phase de vote</div>
+      <div className="btn" onClick={startVotingSession}>Démarrer la phase de vote</div>
       )}
 
-    {currentStatus ==  VotingSessionStarted&& (
-    
-    <div className="btn" onClick={() =>  endVotingSession()}>Terminer la phase de vote</div>
-    )}  
+      {currentStatus == WorflowStatus.VotingSessionStarted && (
 
- 
-      {currentStatus == RegisteringVoters && (<>
+      <div className="btn" onClick={endVotingSession}>Terminer la phase de vote</div>
+      )}
+
+      {currentStatus == WorflowStatus.VotingSessionEnded && (
+
+      <div className="btn" onClick={tallyVotes}>Dépouiller le vote</div>
+      )}
+
+      {currentStatus == WorflowStatus.RegisteringVoters && (<>
         <div>Ajouter des voteurs</div>
         <input
           type="text"
