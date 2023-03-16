@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
@@ -14,8 +13,8 @@ export const Home = ()  => {
     <>
     <AddVotersEvents />
  
-    {state.owner == state.accounts[0] && <VotingAdminAction />}
-    {state.owner != state.accounts[0] && <VoterPart />}
+    {state.owner === state.accounts[0] && <VotingAdminAction />}
+    <VoterPart />
   </>)}
    
   return (

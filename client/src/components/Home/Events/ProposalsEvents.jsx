@@ -24,9 +24,6 @@ export const ProposalsEvents = () => {
       await contract.events
         .VoterRegistered({ fromBlock: "earliest" })
         .on("data", (event) => {
-          console.log("ici",event)
-          let lesevents = event.returnValues;
-          // setEventValue(lesevents);
           setNewEvents([...newEvents, event]);
         })
         .on("changed", (changed) => console.log(changed))
