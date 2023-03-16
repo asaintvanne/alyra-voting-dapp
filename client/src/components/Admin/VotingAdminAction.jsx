@@ -6,13 +6,9 @@ export const  VotingAdminAction = () => {
   const { state: { contract, accounts,workflowStatus } } = useEth();
   const [voterAddress, setVoteAddress] = useState("");
   const [currentStatus, setCurrentStatus] = useState(workflowStatus);
-  useEffect(() => {
-     getStatus();
-  },[]);
 
   useEffect(() => {
     (async function () {
-    
       await contract.events
         .WorkflowStatusChange({ fromBlock: "earliest" })
         .on("data", (event) => {
@@ -28,86 +24,117 @@ export const  VotingAdminAction = () => {
  
 
   const addVoter = async () => {
-    try{
-      await contract.methods.addVoter(voterAddress).call({ from: accounts[0] });
-
-      await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
-
-    }catch(e)
-    {
-      console.log(e)
-    }
+    contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log("Voter registered");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
-  const getStatus = async () => {
-    console.log(workflowStatus)
-  } 
-
   const startProposalsRegistering = async () => {
-    try{
-      await contract.methods.startProposalsRegistering().call({ from: accounts[0] });
-      await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
-    }catch(e){
-      console.log(e)
-    }
-  
+    contract.methods.startProposalsRegistering().call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.startProposalsRegistering().send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log('Transition OK');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    ;
   }
   const endProposalsRegistering = async () => {
-    await contract.methods.endProposalsRegistering().send({ from: accounts[0] });
+    contract.methods.endProposalsRegistering().call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.endProposalsRegistering().send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log('Transition OK');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    ;
   }
   const startVotingSession = async () => {
-    await contract.methods.startVotingSession().send({ from: accounts[0] });
+    contract.methods.startVotingSession().call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.startVotingSession().send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log('Transition OK');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    ;
   }
 
   const endVotingSession = async () => {
-    await contract.methods.endVotingSession().send({ from: accounts[0] });
+    contract.methods.endVotingSession().call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.endVotingSession().send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log('Transition OK');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    ;
   }
 
   const tallyVotes = async () => {
-    await contract.methods.tallyVotes().send({ from: accounts[0] });
+    contract.methods.tallyVotes().call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.tallyVotes().send({ from: accounts[0] });
+      })
+      .then(result => {
+        console.log('Transition OK');
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    ;
   }
 
   return (
     <div className="btns">
-      {currentStatus == WorflowStatus.RegisteringVoters && (
-    
-      <div className="btn" onClick={startProposalsRegistering}>Démarrer la phase de propositions</div>
-      )}
-
-      {currentStatus == WorflowStatus.ProposalsRegistrationStarted && (
-      <>
-      <div className="btn" onClick={endProposalsRegistering}>Terminer la phase de propositions</div>
-      </>)}
-
-      {currentStatus == WorflowStatus.ProposalsRegistrationEnded && (
-     
-      <div className="btn" onClick={startVotingSession}>Démarrer la phase de vote</div>
-      )}
-
-      {currentStatus == WorflowStatus.VotingSessionStarted && (
-
-      <div className="btn" onClick={endVotingSession}>Terminer la phase de vote</div>
-      )}
-
-      {currentStatus == WorflowStatus.VotingSessionEnded && (
-
-      <div className="btn" onClick={tallyVotes}>Dépouiller le vote</div>
-      )}
-
-      {currentStatus == WorflowStatus.RegisteringVoters && (<>
-        <div>Ajouter des voteurs</div>
+      {currentStatus === WorflowStatus.RegisteringVoters && (<>
+        <div className="btn" onClick={startProposalsRegistering}>Démarrer la phase de propositions</div>
+        <div>Ajouter des votants</div>
         <input
           type="text"
           placeholder="Adresse du voteur 0x..."
           value={voterAddress}
           onChange={(e) => setVoteAddress(e.target.value)}
         />
-       
+
         <button type="submit" onClick={addVoter}>Ajouter</button>
 
-        </>)}
+      </>)}
+
+      {currentStatus === WorflowStatus.ProposalsRegistrationStarted && (
+        <div className="btn" onClick={endProposalsRegistering}>Terminer la phase de propositions</div>
+      )}
+
+      {currentStatus === WorflowStatus.ProposalsRegistrationEnded && (
+        <div className="btn" onClick={startVotingSession}>Démarrer la phase de vote</div>
+      )}
+
+      {currentStatus === WorflowStatus.VotingSessionStarted && (
+        <div className="btn" onClick={endVotingSession}>Terminer la phase de vote</div>
+      )}
+
+      {currentStatus === WorflowStatus.VotingSessionEnded && (
+        <div className="btn" onClick={tallyVotes}>Dépouiller le vote</div>
+      )}
     </div>
   );
 }
-
-

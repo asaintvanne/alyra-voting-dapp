@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import useEth from "../../../contexts/EthContext/useEth";
 
 export const AddVotersEvents= () => {
-  const {
-    state: { contract, accounts },
-  } = useEth();
-  const [voterAddress, setVoteAddress] = useState("");
-
-  const [EventValue, setEventValue] = useState("");
+  const { state: { contract } } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
 
@@ -24,19 +19,12 @@ export const AddVotersEvents= () => {
         fromBlock: 0,
         toBlock: "latest",
       });
-      console.log(oldEvents);
-      let oldies = [];
-      // oldEvents.forEach((event) => {
-      //   oldies.push(event.returnValues._val);
-      // });
+
       setOldEvents(oldEvents);
 
       await contract.events
         .VoterRegistered({ fromBlock: "earliest" })
         .on("data", (event) => {
-          console.log("ici",event)
-          let lesevents = event.returnValues;
-          // setEventValue(lesevents);
           setNewEvents([...newEvents, event]);
         })
         .on("changed", (changed) => console.log(changed))
@@ -50,8 +38,6 @@ export const AddVotersEvents= () => {
     <div>Voters</div>
       {oldEvents && oldEvents.map((event) => {return <p>a{event.returnValues.voterAddress}</p>})}
       {newEvents && newEvents.map((event) => {return <p>b{event.returnValues.voterAddress}</p>})}
-
-      {/* {EventValue && <p>{EventValue}</p>} */}
    </div>
   );
 };

@@ -1,4 +1,3 @@
-import React, { useRef, useEffect } from "react";
 import { useEth } from "../contexts/EthContext";
 
 export default function AccountInfo() {

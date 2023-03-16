@@ -3,16 +3,20 @@ import { useState } from "react";
 
 function Tally() {
     const { state: { contract, accounts } } = useEth();
-    const [winningProposal, setWinningProposal] = useState({description: 'GENESIS2', voteCount: 0});
+    const [winningProposal, setWinningProposal] = useState({description: 'GENESIS', voteCount: 0});
 
     const getWinningProposal = async () => {
-        try {
-            const winningProposalID = await contract.methods.winningProposalID().call({ from: accounts[0] });
-            const result = await contract.methods.getOneProposal(winningProposalID).call({ from: accounts[0] });
-            setWinningProposal(result);
-        } catch (error) {
-            console.log(error);
-        }
+      contract.methods.winningProposalID().call({ from: accounts[0] })
+        .then(winningProposalId => {
+          return contract.methods.getOneProposal(winningProposalId).call({ from: accounts[0] });
+        })
+        .then(proposal => {
+          setWinningProposal(proposal);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+      ;
     };
 
     getWinningProposal();

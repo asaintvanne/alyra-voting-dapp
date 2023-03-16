@@ -8,14 +8,14 @@ export const VoterPart = () => {
   const [isRegistered, setIsRegistered] = useState(false);
 
   const isVoterRegistered = async () => {
-    try {
-      const voter = await contract.methods.getVoter(accounts[0]).call({ from: accounts[0] });
-      setIsRegistered(voter.isRegistered);
-    } catch (error) {
-      console.log(error);
-    }
-
-    return isRegistered;
+    contract.methods.getVoter(accounts[0]).call({ from: accounts[0] })
+      .then(voter => {
+        setIsRegistered(voter.isRegistered);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    ;
   };
 
   isVoterRegistered();
