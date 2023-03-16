@@ -28,8 +28,15 @@ export const  VotingAdminAction = () => {
  
 
   const addVoter = async () => {
-    console.log(voterAddress)
-    await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+    try{
+      await contract.methods.addVoter(voterAddress).call({ from: accounts[0] });
+
+      await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+
+    }catch(e)
+    {
+      console.log(e)
+    }
   };
 
   const getStatus = async () => {
@@ -37,7 +44,13 @@ export const  VotingAdminAction = () => {
   } 
 
   const startProposalsRegistering = async () => {
-    await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
+    try{
+      await contract.methods.startProposalsRegistering().call({ from: accounts[0] });
+      await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
+    }catch(e){
+      console.log(e)
+    }
+  
   }
   const endProposalsRegistering = async () => {
     await contract.methods.endProposalsRegistering().send({ from: accounts[0] });
@@ -85,10 +98,9 @@ export const  VotingAdminAction = () => {
         <div>Ajouter des voteurs</div>
         <input
           type="text"
-          placeholder="uint"
+          placeholder="Adresse du voteur 0x..."
           value={voterAddress}
           onChange={(e) => setVoteAddress(e.target.value)}
-          // onChange={() => setVoteAddress()}
         />
        
         <button type="submit" onClick={addVoter}>Ajouter</button>
