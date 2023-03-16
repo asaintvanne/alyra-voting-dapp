@@ -8,15 +8,12 @@ function EthProvider({ children }) {
 
   const init = useCallback(
     async artifact => {
-      console.log("init");
-      console.log(artifact)
+    
       if (artifact) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
-        console.log(accounts)
-        console.log(networkID)
-        console.log(artifact.networks);
+       
         const { abi } = artifact;
         let address, contract;
         try {
@@ -53,10 +50,17 @@ function EthProvider({ children }) {
     const handleChange = () => {
       init(state.artifact);
     };
+    if(window.ethereum )
+    {
+      events.forEach(e => window.ethereum.on(e, handleChange));
+    }
 
-    events.forEach(e => window.ethereum.on(e, handleChange));
     return () => {
-      events.forEach(e => window.ethereum.removeListener(e, handleChange));
+      if(window.ethereum )
+      {
+        events.forEach(e => window.ethereum.removeListener(e, handleChange));
+
+      }
     };
   }, [init, state.artifact]);
 

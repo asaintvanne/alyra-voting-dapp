@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.18;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title A voting system
 /// @notice This voting system is used to collect proposal and organize a vote 

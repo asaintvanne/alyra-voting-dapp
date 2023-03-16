@@ -2,18 +2,20 @@ import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
-import { VotingAdminAction } from "./VotingAdminAction";
+import { VotingAdminAction } from "../Admin/VotingAdminAction";
 import { AddVotersEvents } from "./Events/AddVotersEvents";
+import { VoterPart } from "../VoterPart";
 
-export const  Demo = ()  => {
+export const Home = ()  => {
   const { state } = useEth();
 
-  const Demo =() =>{
+  const BaseComponent =() =>{
     return( 
     <>
     <AddVotersEvents />
  
     {state.owner == state.accounts[0] && <VotingAdminAction />}
+    {state.owner != state.accounts[0] && <VoterPart />}
   </>)}
    
   return (
@@ -22,7 +24,7 @@ export const  Demo = ()  => {
       {
         !state.artifact ? <NoticeNoArtifact /> :
           !state.contract ? <NoticeWrongNetwork /> :
-            <Demo />
+            <BaseComponent />
       }
     </div>
   );
