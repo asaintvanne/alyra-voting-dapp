@@ -25,7 +25,7 @@ export const AddVotersEvents= () => {
       await contract.events
         .VoterRegistered({ fromBlock: "earliest" })
         .on("data", (event) => {
-          setNewEvents([...newEvents, event]);
+          setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
         .on("error", (err) => console.log(err))
