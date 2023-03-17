@@ -5,11 +5,14 @@ import Proposal from "./Proposal";
 import Vote from "./Vote";
 import Tally from "./Tally";
 
+
+
 function VoterAction () {
   const { state: { workflowStatus } } = useEth();
 
   return (
-      <>
+      <div style={{marginTop :10}}>
+      <h3>Partie Voteur</h3>
         {[WorflowStatus.RegisteringVoters, WorflowStatus.ProposalsRegistrationEnded, WorflowStatus.VotingSessionEnded].includes(workflowStatus) && (<>
           <NoActionRequested />
         </>)}
@@ -25,7 +28,7 @@ function VoterAction () {
         {workflowStatus === WorflowStatus.VotesTallied && (<>
           <Tally />
         </>)}
-      </>
+      </div>
   );
 };
 

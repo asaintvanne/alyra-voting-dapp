@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import * as WorflowStatus from "../models/WorflowStatus";
 import {  toast } from 'react-toastify';
+import { actions } from "../../contexts/EthContext";
 
 
 export const  VotingAdminAction = () => {
-  const { state: { contract, accounts,workflowStatus } } = useEth();
+  const { state: { contract, accounts,workflowStatus } , dispatch} = useEth();
   const [voterAddress, setVoteAddress] = useState("");
   const [currentStatus, setCurrentStatus] = useState(workflowStatus);
 
@@ -14,7 +15,7 @@ export const  VotingAdminAction = () => {
       await contract.events
         .WorkflowStatusChange({ fromBlock: "earliest" })
         .on("data", (event) => {
-    
+          dispatch({ type:  actions.SET_WORKFLOW_STATUS, data:  event.returnValues.newStatus })
           setCurrentStatus(event.returnValues.newStatus);
         })
         .on("changed", (changed) => console.log(changed))
@@ -28,7 +29,7 @@ export const  VotingAdminAction = () => {
   const addVoter = async () => {
     try{
      await  contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
-      await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+     await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
 
     }
     catch(e)
@@ -111,9 +112,13 @@ export const  VotingAdminAction = () => {
 
   return (
     <div className="btns">
-      {currentStatus === WorflowStatus.RegisteringVoters && (<>
+      <h3>Partie Administration</h3>
+      {currentStatus === WorflowStatus.RegisteringVoters && (
+      <div style={{marginBottom : 30}}>
         <div className="btn" onClick={startProposalsRegistering}>Démarrer la phase de propositions</div>
-        <div>Ajouter des votants</div>
+
+        <h4  style={{marginTop : 30}}>Ou</h4>
+        <h4 style={{marginTop : 30}}>Ajouter des votants</h4>
         <input
           type="text"
           placeholder="Adresse du voteur 0x..."
@@ -123,7 +128,7 @@ export const  VotingAdminAction = () => {
 
         <button type="submit" onClick={addVoter}>Ajouter</button>
 
-      </>)}
+      </div>)}
 
       {currentStatus === WorflowStatus.ProposalsRegistrationStarted && (
         <div className="btn" onClick={endProposalsRegistering}>Terminer la phase de propositions</div>

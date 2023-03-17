@@ -9,13 +9,13 @@ function App() {
   return (
     <EthProvider>
       <div id="App">
+     
       <ToastContainer />
-        <div className="container">
     
-          <AccountInfo />
+         
           <Home />         
         </div>
-      </div>
+   
     </EthProvider>
   );
 }
