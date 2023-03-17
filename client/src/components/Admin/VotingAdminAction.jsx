@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import * as WorflowStatus from "../models/WorflowStatus";
+import {  toast } from 'react-toastify';
+
 
 export const  VotingAdminAction = () => {
   const { state: { contract, accounts,workflowStatus } } = useEth();
@@ -24,16 +26,19 @@ export const  VotingAdminAction = () => {
  
 
   const addVoter = async () => {
-    contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
-      .then(result => {
-        return contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
-      })
-      .then(result => {
-        console.log("Voter registered");
-      })
-      .catch(error => {
-        console.log(error);
+    try{
+     await  contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
+      await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+
+    }
+    catch(e)
+    {
+      console.log(e)
+      toast.error(e.code, {
+        position: toast.POSITION.TOP_LEFT
       });
+    }
+ 
   };
 
   const startProposalsRegistering = async () => {
