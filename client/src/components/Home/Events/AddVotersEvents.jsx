@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
+import { actions } from "../../../contexts/EthContext";
 import useEth from "../../../contexts/EthContext/useEth";
 
 export const AddVotersEvents= () => {
-  const { state: { contract } } = useEth();
+  const { state: { contract , accounts} ,dispatch } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
 
-
-  // event VoterRegistered(address voterAddress); 
-  // event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
-  // event ProposalRegistered(uint proposalId);
-  // event Voted (address voter, uint proposalId);
-  
 
   useEffect(() => {
     (async function () {
@@ -25,6 +20,11 @@ export const AddVotersEvents= () => {
       await contract.events
         .VoterRegistered({ fromBlock: "earliest" })
         .on("data", (event) => {
+           //on gere le cas où l'admin s'ajoute lui même pour que la partie voter s'affiche de suite
+           //et aussi le cas ou le voter est sur le site et que l'admin l'ajoute en meme temps : pas besoin de rafraichir la page pour le user
+
+          dispatch({ type:  actions.ADD_VOTERS, data: accounts[0] == event.returnValues.voterAddress})
+
           setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
@@ -36,8 +36,8 @@ export const AddVotersEvents= () => {
   return (
    <div>
     <div>Voters</div>
-      {oldEvents && oldEvents.map((event) => {return <p>a{event.returnValues.voterAddress}</p>})}
-      {newEvents && newEvents.map((event) => {return <p>b{event.returnValues.voterAddress}</p>})}
+      {oldEvents && oldEvents.map((event) => {return <p>{event.returnValues.voterAddress}</p>})}
+      {newEvents && newEvents.map((event) => {return <p>{event.returnValues.voterAddress}</p>})}
    </div>
   );
 };

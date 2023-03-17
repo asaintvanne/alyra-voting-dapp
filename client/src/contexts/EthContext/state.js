@@ -1,5 +1,7 @@
 const actions = {
-  init: "INIT"
+  init: "INIT",
+  SET_WORKFLOW_STATUS: "SET_WORKFLOW_STATUS",
+  ADD_VOTERS: "ADD_VOTERS",
 };
 
 const initialState = {
@@ -15,6 +17,11 @@ const reducer = (state, action) => {
   switch (type) {
     case actions.init:
       return { ...state, ...data };
+    case actions.SET_WORKFLOW_STATUS:
+
+      return { ...state, workflowStatus: data };
+    case actions.ADD_VOTERS:
+      return { ...state, isRegistered: data };
     default:
       throw new Error("Undefined reducer action type");
   }
