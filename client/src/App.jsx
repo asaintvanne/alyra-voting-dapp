@@ -9,7 +9,7 @@ function App() {
   return (
     <EthProvider>
       <div id="App">
-      < ToastContainer />
+      <ToastContainer />
         <div className="container">
     
           <AccountInfo />
