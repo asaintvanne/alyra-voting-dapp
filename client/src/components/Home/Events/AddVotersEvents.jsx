@@ -24,7 +24,8 @@ export const AddVotersEvents= () => {
            //et aussi le cas ou le voter est sur le site et que l'admin l'ajoute en meme temps : pas besoin de rafraichir la page pour le user
 
           dispatch({ type:  actions.ADD_VOTERS, data: accounts[0] == event.returnValues.voterAddress})
-          setNewEvents([...newEvents, event]);
+
+          setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
         .on("error", (err) => console.log(err))
