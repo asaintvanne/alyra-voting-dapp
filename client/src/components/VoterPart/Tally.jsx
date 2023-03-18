@@ -1,5 +1,6 @@
 import useEth from "../../contexts/EthContext/useEth";
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
 function Tally() {
     const { state: { contract, accounts } } = useEth();
@@ -23,7 +24,10 @@ function Tally() {
 
     return (
       <>
-        Proposal "{winningProposal.description}" wins with {winningProposal.voteCount} vote{winningProposal.voteCount > 1 ? 's' : ''} !
+      {winningProposal.description == 'GENESIS' ? 
+        "Aucune proposition n'a remporté de voix." :
+        "La proposition gagnante est \"" + winningProposal.description + "\" avec " + winningProposal.voteCount + " voix."
+      }
       </>
     );
   }

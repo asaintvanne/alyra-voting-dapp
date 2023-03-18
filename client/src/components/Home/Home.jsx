@@ -13,7 +13,7 @@ export const Home = ()  => {
     return( 
     <>
     <div className="topBar">
-        <div className="title">Votery</div>
+        <div className="title">Système de vote</div>
         <AccountInfo />
     </div>
   <div className="container">

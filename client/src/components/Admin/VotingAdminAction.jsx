@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import * as WorflowStatus from "../models/WorflowStatus";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { actions } from "../../contexts/EthContext";
 
 
@@ -27,18 +27,21 @@ export const  VotingAdminAction = () => {
  
 
   const addVoter = async () => {
-    try{
-     await  contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
-     await contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
-
-    }
-    catch(e)
-    {
-      console.log(e)
-      toast.error(e.code, {
-        position: toast.POSITION.TOP_LEFT
-      });
-    }
+    contract.methods.addVoter(voterAddress).call({ from: accounts[0] })
+      .then(result => {
+        return contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
+      })
+      .then(result => {
+        toast.success("La participation du votant est enregistrée", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      })
+      .catch(error => {
+        toast.error("Impossible d'ajouter un votant", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      })
+    ;
  
   };
 
@@ -48,10 +51,14 @@ export const  VotingAdminAction = () => {
         return contract.methods.startProposalsRegistering().send({ from: accounts[0] });
       })
       .then(result => {
-        console.log('Transition OK');
+        toast.success("Transition vers " + WorflowStatus.getWorkflowStatus(result.events.WorkflowStatusChange.returnValues.newStatus) + " effectuée", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
       .catch(error => {
-        console.error(error);
+        toast.error("Impossible de changer le statut", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
     ;
   }
@@ -61,10 +68,14 @@ export const  VotingAdminAction = () => {
         return contract.methods.endProposalsRegistering().send({ from: accounts[0] });
       })
       .then(result => {
-        console.log('Transition OK');
+        toast.success("Transition vers " + WorflowStatus.getWorkflowStatus(result.events.WorkflowStatusChange.returnValues.newStatus) + " effectuée", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
       .catch(error => {
-        console.error(error);
+        toast.error("Impossible de changer le statut", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
     ;
   }
@@ -74,10 +85,14 @@ export const  VotingAdminAction = () => {
         return contract.methods.startVotingSession().send({ from: accounts[0] });
       })
       .then(result => {
-        console.log('Transition OK');
+        toast.success("Transition vers " + WorflowStatus.getWorkflowStatus(result.events.WorkflowStatusChange.returnValues.newStatus) + " effectuée", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
       .catch(error => {
-        console.error(error);
+        toast.error("Impossible de changer le statut", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
     ;
   }
@@ -88,10 +103,14 @@ export const  VotingAdminAction = () => {
         return contract.methods.endVotingSession().send({ from: accounts[0] });
       })
       .then(result => {
-        console.log('Transition OK');
+        toast.success("Transition vers " + WorflowStatus.getWorkflowStatus(result.events.WorkflowStatusChange.returnValues.newStatus) + " effectuée", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
       .catch(error => {
-        console.error(error);
+        toast.error("Impossible de changer le statut", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
     ;
   }
@@ -102,10 +121,14 @@ export const  VotingAdminAction = () => {
         return contract.methods.tallyVotes().send({ from: accounts[0] });
       })
       .then(result => {
-        console.log('Transition OK');
+        toast.success("Transition vers " + WorflowStatus.getWorkflowStatus(result.events.WorkflowStatusChange.returnValues.newStatus) + " effectuée", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
       .catch(error => {
-        console.error(error);
+        toast.error("Impossible de changer le statut", {
+          position: toast.POSITION.TOP_LEFT
+        });
       })
     ;
   }
@@ -121,7 +144,7 @@ export const  VotingAdminAction = () => {
         <h4 style={{marginTop : 30}}>Ajouter des votants</h4>
         <input
           type="text"
-          placeholder="Adresse du voteur 0x..."
+          placeholder="Adresse du votant 0x..."
           value={voterAddress}
           onChange={(e) => setVoteAddress(e.target.value)}
         />

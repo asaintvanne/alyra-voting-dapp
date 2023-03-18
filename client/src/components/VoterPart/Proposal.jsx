@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
+import { toast } from 'react-toastify';
 
 function Proposal () {
   const { state: { contract, accounts } } = useEth();
@@ -7,7 +8,9 @@ function Proposal () {
 
   const sendProposal = async e => {
     if (inputProposal === '') {
-      alert('No empty proposal');
+      toast.error("Impossible d'enregistrer une proposition vide", {
+        position: toast.POSITION.TOP_LEFT
+      });
       return;
     }
 
@@ -16,19 +19,23 @@ function Proposal () {
 				return contract.methods.addProposal(inputProposal).send({ from: accounts[0] });
 			})
 			.then(result => {
-				console.log("Proposal registered with ID " + result.events.ProposalRegistered.returnValues.proposalId);
+        toast.success("Proposition enregistrée avec l'ID " + result.events.ProposalRegistered.returnValues.proposalId, {
+          position: toast.POSITION.TOP_LEFT
+        });
 				setInputProposal("");
 			})
 			.catch(error => {
-				console.log(error);
+        toast.error("Impossible d'enregistrer la proposition", {
+          position: toast.POSITION.TOP_LEFT
+        });
 			})
     ;
   };
 
   return (
     <>
-			<input type="text" placeholder="Describe your proposal" value={inputProposal} onChange={(e) => setInputProposal(e.target.value)} />
-			<button onClick={sendProposal}>Send proposal</button>
+			<input type="text" placeholder="Description" value={inputProposal} onChange={(e) => setInputProposal(e.target.value)} />
+			<button onClick={sendProposal}>Envoyer la proposition</button>
     </>
   );
 };

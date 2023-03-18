@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
+import { toast } from 'react-toastify';
 
 function Vote () {
   const { state: { contract, web3, txhash, accounts } } = useEth();
@@ -10,7 +11,9 @@ function Vote () {
 
   const sendVote = async e => {
     if (inputVoteProposalId === '0') {
-      alert('Cannot vote for proposal 0');
+      toast.error("Impossible de voter pour la proposition 0", {
+        position: toast.POSITION.TOP_LEFT
+      });
       return;
     } else if (inputVoteProposalId === '') {
       return;
@@ -21,11 +24,15 @@ function Vote () {
 				return contract.methods.setVote(inputVoteProposalId).send({ from: accounts[0] });
 			})
 			.then(result => {
-				console.log("Vote registered");
+        toast.success("Le vote pour la proposition " + inputVoteProposalId + " est enregistré", {
+          position: toast.POSITION.TOP_LEFT
+        });
 				setHasVoted(true);
 			})
 			.catch(error => {
-				console.log(error);
+        toast.error("Impossible d'enregistrer le vote", {
+          position: toast.POSITION.TOP_LEFT
+        });
 			})
 		;
   };
@@ -44,7 +51,9 @@ function Vote () {
 						setInputProposalDescription(result.description);
 					})
 					.catch(error => {
-						console.log(error);
+            toast.error("Impossible de récupérer le libellé de la proposition", {
+              position: toast.POSITION.TOP_LEFT
+            });
 					})
 				;
     } else {
@@ -58,7 +67,9 @@ function Vote () {
 				setHasVoted(voter.hasVoted);
 			})
 			.catch(error => {
-				console.log(error);
+        toast.error("Impossible de récupérer l'état du votant", {
+          position: toast.POSITION.TOP_LEFT
+        });
 			})
 	};
 	
@@ -69,7 +80,9 @@ function Vote () {
 					setProposalList(proposalRegisteredEvents.map((item) => item.returnValues.proposalId));
 				})
 				.catch(error => {
-					console.log(error);
+          toast.error("Impossible de récupérer la liste des propositions", {
+            position: toast.POSITION.TOP_LEFT
+          });
 				})
 			;
 	}
@@ -81,15 +94,15 @@ function Vote () {
       <>
         {!hasVoted ? (<>
             <select onChange={handleInputProposalIdChange}>
-              <option value="">Choose a proposal</option>
+              <option value="">Choisir une proposition</option>
               {proposalList.map((proposalId) => (
                 <option key={proposalId} value={proposalId}>{proposalId}</option>
               ))}
             </select>
-            <input type="text" placeholder="Select a proposal" value={inputProposalDescription} disabled="disabled" />
-            <button onClick={sendVote}>Send vote</button>
+            <input type="text" placeholder="Selectionnez une proposition" value={inputProposalDescription} disabled="disabled" />
+            <button onClick={sendVote}>Voter</button>
           </>) : (<>
-            <div>You already voted</div>
+            <div>Vous avez déjà voté.</div>
           </>)
         }
       </>
