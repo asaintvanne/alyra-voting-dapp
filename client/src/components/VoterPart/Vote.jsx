@@ -93,16 +93,30 @@ function Vote () {
   return (
       <>
         {!hasVoted ? (<>
-            <select onChange={handleInputProposalIdChange}>
-              <option value="">Choisir une proposition</option>
-              {proposalList.map((proposalId) => (
-                <option key={proposalId} value={proposalId}>{proposalId}</option>
-              ))}
-            </select>
-            <input type="text" placeholder="Selectionnez une proposition" value={inputProposalDescription} disabled="disabled" />
-            <button onClick={sendVote}>Voter</button>
+          <div class="row">
+            <div class="col">
+              <select id="select_proposition" onChange={handleInputProposalIdChange}>
+                <option value="">Choisir une proposition</option>
+                {proposalList.map((proposalId) => (
+                  <option key={proposalId} value={proposalId}>{proposalId}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <input id="input_proposition" type="text" placeholder="Sélectionnez une proposition" value={inputProposalDescription} disabled="disabled" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <button type="button" className="btn btn-primary mt-1" onClick={sendVote}>Voter</button>
+            </div>
+          </div>
           </>) : (<>
-            <div>Vous avez déjà voté.</div>
+            Vous avez déjà voté.
           </>)
         }
       </>

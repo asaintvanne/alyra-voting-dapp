@@ -1,51 +1,8 @@
-html {
-  font-size: 10px;
-  font-family: sans-serif;
+.current-status {
+  font-size: 1.8em;
+  color: #0085f2;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
-#App {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  --primary-color: #1266cc;
-  --secondary-color: #f96400;
-  --flash-color: rgb(89, 255, 0);
-  --gray: #999;
-  --light-gray: #e0e0e0;
-  --dark-gray: #777;
-}
-
-.btn{
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: #f96400;
-  color : white;
-  width: 200px;
-}
-
-.topBar{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 90vw;
-  padding: 20px;
-  
-}
-
-.container{
-  display: flex;
-  flex-direction: row;
+#input_voter, #input_proposal, #select_proposition, #input_proposition {
+  width: 400px;
 }

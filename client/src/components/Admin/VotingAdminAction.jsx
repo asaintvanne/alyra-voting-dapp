@@ -134,40 +134,49 @@ export const  VotingAdminAction = () => {
   }
 
   return (
-    <div className="btns">
-      <h3>Partie Administration</h3>
+    <div class="jumbotron text-center">
       {currentStatus === WorflowStatus.RegisteringVoters && (
-      <div style={{marginBottom : 30}}>
-        <div className="btn" onClick={startProposalsRegistering}>Démarrer la phase de propositions</div>
-
-        <h4  style={{marginTop : 30}}>Ou</h4>
-        <h4 style={{marginTop : 30}}>Ajouter des votants</h4>
-        <input
-          type="text"
-          placeholder="Adresse du votant 0x..."
-          value={voterAddress}
-          onChange={(e) => setVoteAddress(e.target.value)}
-        />
-
-        <button type="submit" onClick={addVoter}>Ajouter</button>
-
-      </div>)}
+      <>
+        <h3>Ajouter un votant</h3>
+        <div class="row">
+          <div class="col">
+            <input
+              id="input_voter"
+              type="text"
+              placeholder="Adresse du votant 0x..."
+              value={voterAddress}
+              onChange={(e) => setVoteAddress(e.target.value)}
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" className="btn btn-primary mt-1" onClick={addVoter}>Ajouter</button>
+          </div>
+        </div>
+        <hr />
+        <button type="button" className="btn btn-primary" onClick={startProposalsRegistering}>Démarrer la phase de propositions</button>
+      </>)}
 
       {currentStatus === WorflowStatus.ProposalsRegistrationStarted && (
-        <div className="btn" onClick={endProposalsRegistering}>Terminer la phase de propositions</div>
+        <button type="button" className="btn btn-primary" onClick={endProposalsRegistering}>Terminer la phase de propositions</button>
       )}
 
       {currentStatus === WorflowStatus.ProposalsRegistrationEnded && (
-        <div className="btn" onClick={startVotingSession}>Démarrer la phase de vote</div>
+        <button type="button" className="btn btn-primary" onClick={startVotingSession}>Démarrer la phase de vote</button>
       )}
 
       {currentStatus === WorflowStatus.VotingSessionStarted && (
-        <div className="btn" onClick={endVotingSession}>Terminer la phase de vote</div>
+        <button type="button" className="btn btn-primary" onClick={endVotingSession}>Terminer la phase de vote</button>
       )}
 
       {currentStatus === WorflowStatus.VotingSessionEnded && (
-        <div className="btn" onClick={tallyVotes}>Dépouiller le vote</div>
+        <button type="button" className="btn btn-primary" onClick={tallyVotes}>Dépouiller le vote</button>
       )}
+
+      {currentStatus === WorflowStatus.VotesTallied && (<>
+        Aucune action n'est demandée lors de cette phase.
+      </>)}
     </div>
   );
 }

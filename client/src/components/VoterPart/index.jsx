@@ -6,10 +6,10 @@ export const VoterPart = () => {
   const { state: { isRegistered } } = useEth();
 
   return (
-    <>
+    <div class="jumbotron text-center">
     {
       !isRegistered ? <NoRegisteredVoter /> : <VoterAction />
     }
-    </>
+    </div>
   );
 }
