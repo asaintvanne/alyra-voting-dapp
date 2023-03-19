@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { actions } from "../../../contexts/EthContext";
 import useEth from "../../../contexts/EthContext/useEth";
+import { addressCut } from "../../../libs/address_cut.js"
 
 export const AddVotersEvents= () => {
   const { state: { contract , accounts} ,dispatch } = useEth();
@@ -36,8 +37,8 @@ export const AddVotersEvents= () => {
   return (
    <div>
     <div>Voters</div>
-      {oldEvents && oldEvents.map((event) => {return <p>{event.returnValues.voterAddress}</p>})}
-      {newEvents && newEvents.map((event) => {return <p>{event.returnValues.voterAddress}</p>})}
+      {oldEvents && oldEvents.map((event) => {return <p>{addressCut(event.returnValues.voterAddress)}</p>})}
+      {newEvents && newEvents.map((event) => {return <p>{addressCut(event.returnValues.voterAddress)}</p>})}
    </div>
   );
 };

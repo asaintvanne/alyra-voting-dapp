@@ -15,7 +15,9 @@ function Tally() {
           setWinningProposal(proposal);
         })
         .catch(error => {
-          console.log(error);
+          toast.error("Impossible de récupérer la proposition gagnante", {
+            position: toast.POSITION.TOP_LEFT
+          });
         })
       ;
     };
@@ -24,7 +26,7 @@ function Tally() {
 
     return (
       <>
-      {winningProposal.description == 'GENESIS' ? 
+      {winningProposal.description === 'GENESIS' ?
         "Aucune proposition n'a remporté de voix." :
         "La proposition gagnante est \"" + winningProposal.description + "\" avec " + winningProposal.voteCount + " voix."
       }

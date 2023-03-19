@@ -5,6 +5,7 @@ import { VotingAdminAction } from "../Admin/VotingAdminAction";
 import { AddVotersEvents } from "./Events/AddVotersEvents";
 import { VoterPart } from "../VoterPart";
 import AccountInfo from "../AccountInfo";
+import * as WorflowStatus from "../models/WorflowStatus";
 
 export const Home = ()  => {
   const { state } = useEth();
@@ -12,24 +13,19 @@ export const Home = ()  => {
   const BaseComponent =() =>{
     return( 
     <>
-    <div className="topBar">
-        <div className="title">Système de vote</div>
-        <AccountInfo />
-    </div>
-  <div className="container">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <AccountInfo />
+    </nav>
 
-    <div style={{width :'70%'}}>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col text-center current-status">{WorflowStatus.getWorkflowStatus(state.workflowStatus)}</div>
+      </div>
+      {state.owner === state.accounts[0] && <VotingAdminAction />}
+      <VoterPart />
+      <AddVotersEvents />
+    </main>
 
-    {state.owner === state.accounts[0] && <VotingAdminAction />}
-    <VoterPart />
-
-    </div>
- 
-    <div style={{width :'30%'}}>
-    <AddVotersEvents />
-    </div>
-
-    </div>
   </>)}
    
   return (
