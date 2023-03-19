@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import useEth from "../../../contexts/EthContext/useEth";
+import { addressCut } from "../../../libs/address_cut.js"
 
 export const VotingEvents = () => {
   const {
-    state: { contract, accounts },
+    state: { contract, web3, txhash },
   } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
-
-
-  // event VoterRegistered(address voterAddress); 
-  // event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
-  // event ProposalRegistered(uint proposalId);
-  // event Voted (address voter, uint proposalId);
   
 
   useEffect(() => {
     (async function () {
-    
+      const deployTx = await web3.eth.getTransaction(txhash);
+      contract.getPastEvents("Voted", {
+        fromBlock: deployTx.blockNumber,
+        toBlock: "latest",
+      }).then(results => {
+        setOldEvents(results);
+      });
+
+    setOldEvents(oldEvents);
+
       await contract.events
         .Voted({ fromBlock: "earliest" })
         .on("data", (event) => {
-          console.log("ici",event)
-          console.log(event.returnValues);
-          // setEventValue(lesevents);
-          // setNewEvents([...newEvents, event]);
+          setNewEvents([...newEvents, event]);
         })
         .on("changed", (changed) => console.log(changed))
         .on("error", (err) => console.log(err))
@@ -33,12 +34,12 @@ export const VotingEvents = () => {
   }, [contract]);
 
   return (
-   <div>
-    <div>Historique des vots</div>
-      {oldEvents && oldEvents.map((event) => {return <p>a{event.returnValues.voterAddress}</p>})}
-      {newEvents && newEvents.map((event) => {return <p>b{event.returnValues.voterAddress}</p>})}
-
-      {/* {EventValue && <p>{EventValue}</p>} */}
-   </div>
+    <>
+      <h4>Votes</h4>
+      <ul>
+        {oldEvents && oldEvents.map((event, i) => {return <li key={i}>{addressCut(event.returnValues.voter)} a voté pour la proposition {event.returnValues.proposalId}</li>})}
+        {newEvents && newEvents.map((event, i) => {return <li key={i}>{addressCut(event.returnValues.voter)} a voté pour la proposition {event.returnValues.proposalId}</li>})}
+      </ul>
+    </>
   );
 };

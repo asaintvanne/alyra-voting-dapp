@@ -21,11 +21,6 @@ export const AddVotersEvents= () => {
       await contract.events
         .VoterRegistered({ fromBlock: "earliest" })
         .on("data", (event) => {
-           //on gere le cas où l'admin s'ajoute lui même pour que la partie voter s'affiche de suite
-           //et aussi le cas ou le voter est sur le site et que l'admin l'ajoute en meme temps : pas besoin de rafraichir la page pour le user
-
-          dispatch({ type:  actions.ADD_VOTERS, data: accounts[0] == event.returnValues.voterAddress})
-
           setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
@@ -35,10 +30,13 @@ export const AddVotersEvents= () => {
   }, [contract]);
 
   return (
-   <div>
-    <div>Voters</div>
-      {oldEvents && oldEvents.map((event) => {return <p>{addressCut(event.returnValues.voterAddress)}</p>})}
-      {newEvents && newEvents.map((event) => {return <p>{addressCut(event.returnValues.voterAddress)}</p>})}
-   </div>
+   <>
+    <h4>Votants</h4>
+    <ul>
+      {oldEvents && oldEvents.map((event, i) => {return <li key={i}>{addressCut(event.returnValues.voterAddress)}</li>})}
+      {newEvents && newEvents.map((event, i) => {return <li key={i}>{addressCut(event.returnValues.voterAddress)}</li>})}
+    </ul>
+
+   </>
   );
 };

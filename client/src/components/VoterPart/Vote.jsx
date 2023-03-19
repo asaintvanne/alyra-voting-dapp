@@ -93,8 +93,8 @@ function Vote () {
   return (
       <>
         {!hasVoted ? (<>
-          <div class="row">
-            <div class="col">
+          <div className="row">
+            <div className="col">
               <select id="select_proposition" onChange={handleInputProposalIdChange}>
                 <option value="">Choisir une proposition</option>
                 {proposalList.map((proposalId) => (
@@ -104,14 +104,14 @@ function Vote () {
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
+          <div className="row">
+            <div className="col">
               <input id="input_proposition" type="text" placeholder="Sélectionnez une proposition" value={inputProposalDescription} disabled="disabled" />
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
+          <div className="row">
+            <div className="col">
               <button type="button" className="btn btn-primary mt-1" onClick={sendVote}>Voter</button>
             </div>
           </div>

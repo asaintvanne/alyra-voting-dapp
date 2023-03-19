@@ -1,8 +1,18 @@
+body {
+  min-height: 0;
+  padding-top: 4.5rem;
+}
+
 .current-status {
   font-size: 1.8em;
   color: #0085f2;
+  padding-bottom: 1rem;
 }
 
-#input_voter, #input_proposal, #select_proposition, #input_proposition {
+#input_voter, #input_proposal, #select_proposition, #input_proposition, .btn {
   width: 400px;
+}
+
+ul {
+  list-style-type: '-';
 }

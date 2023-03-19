@@ -34,15 +34,14 @@ function Proposal () {
 
   return (
     <>
-      <h3>Ajouter une  proposition</h3>
-      <div class="row">
-        <div class="col">
-          <input id="input_proposal" type="text" placeholder="Description" value={inputProposal} onChange={(e) => setInputProposal(e.target.value)} />
+      <div className="row">
+        <div className="col">
+          <input id="input_proposal" type="text" placeholder="Description de la proposition" value={inputProposal} onChange={(e) => setInputProposal(e.target.value)} />
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <button onClick={sendProposal} className="btn btn-primary mt-1">Envoyer la proposition</button>
+      <div className="row">
+        <div className="col">
+          <button onClick={sendProposal} className="btn btn-primary mt-1">Soumettre la proposition</button>
         </div>
       </div>
     </>
