@@ -6,7 +6,7 @@ import { actions } from "../../contexts/EthContext";
 
 
 export const  VotingAdminAction = () => {
-  const { state: { contract, accounts,workflowStatus } , dispatch} = useEth();
+  const { state: { contract, accounts,workflowStatus, isRegistered } , dispatch} = useEth();
   const [voterAddress, setVoteAddress] = useState("");
   const [currentStatus, setCurrentStatus] = useState(workflowStatus);
 
@@ -15,7 +15,7 @@ export const  VotingAdminAction = () => {
       await contract.events
         .WorkflowStatusChange({ fromBlock: "earliest" })
         .on("data", (event) => {
-          dispatch({ type:  actions.SET_WORKFLOW_STATUS, data:  event.returnValues.newStatus })
+          dispatch({ type:  actions.SET_WORKFLOW_STATUS, data:  event.returnValues.newStatus });
           setCurrentStatus(event.returnValues.newStatus);
         })
         .on("changed", (changed) => console.log(changed))
@@ -32,6 +32,8 @@ export const  VotingAdminAction = () => {
         return contract.methods.addVoter(voterAddress).send({ from: accounts[0] });
       })
       .then(result => {
+        setVoteAddress("");
+        dispatch({ type: actions.ADD_VOTERS, data: isRegistered || (accounts[0] == voterAddress) });
         toast.success("La participation du votant est enregistrée", {
           position: toast.POSITION.TOP_LEFT
         });
@@ -134,12 +136,11 @@ export const  VotingAdminAction = () => {
   }
 
   return (
-    <div class="jumbotron text-center">
+    <div className="jumbotron text-center">
       {currentStatus === WorflowStatus.RegisteringVoters && (
       <>
-        <h3>Ajouter un votant</h3>
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
             <input
               id="input_voter"
               type="text"
@@ -149,8 +150,8 @@ export const  VotingAdminAction = () => {
             />
           </div>
         </div>
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
             <button type="submit" className="btn btn-primary mt-1" onClick={addVoter}>Ajouter</button>
           </div>
         </div>

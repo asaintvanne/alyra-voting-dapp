@@ -18,7 +18,6 @@ const reducer = (state, action) => {
     case actions.init:
       return { ...state, ...data };
     case actions.SET_WORKFLOW_STATUS:
-
       return { ...state, workflowStatus: data };
     case actions.ADD_VOTERS:
       return { ...state, isRegistered: data };

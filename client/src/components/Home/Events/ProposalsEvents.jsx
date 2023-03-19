@@ -1,44 +1,39 @@
 import { useEffect, useState } from "react";
+import { actions } from "../../../contexts/EthContext";
 import useEth from "../../../contexts/EthContext/useEth";
 
 export const ProposalsEvents = () => {
-  const {
-    state: { contract, accounts },
-  } = useEth();
-  const [voterAddress, setVoteAddress] = useState("");
-
-  const [EventValue, setEventValue] = useState("");
+  const { state: { contract } } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
 
-
-  // event VoterRegistered(address voterAddress); 
-  // event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
-  // event ProposalRegistered(uint proposalId);
-  // event Voted (address voter, uint proposalId);
-  
-
   useEffect(() => {
     (async function () {
-    
-      await contract.events
-        .VoterRegistered({ fromBlock: "earliest" })
+      let oldEvents = await contract.getPastEvents("ProposalRegistered", {
+        fromBlock: 0,
+        toBlock: "latest",
+      });
+
+      setOldEvents(oldEvents);
+
+      contract.events
+        .ProposalRegistered({ fromBlock: "latest" })
         .on("data", (event) => {
-          setNewEvents([...newEvents, event]);
+          setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
         .on("error", (err) => console.log(err))
         .on("connected", (str) => console.log(str));
     })();
-  }, [contract]);
+  }, []);
 
   return (
-   <div>
-    <div>Voters</div>
-      {oldEvents && oldEvents.map((event) => {return <p>a{event.returnValues.voterAddress}</p>})}
-      {newEvents && newEvents.map((event) => {return <p>b{event.returnValues.voterAddress}</p>})}
-
-      {/* {EventValue && <p>{EventValue}</p>} */}
-   </div>
+   <>
+    <h4>Propositions</h4>
+    <ul>
+      {oldEvents && oldEvents.map((event, i) => { return <li key={event.returnValues.proposalId}>{event.returnValues.proposalId}</li>})}
+      {newEvents && newEvents.map((event, i) => { return <li key={event.returnValues.proposalId}>{event.returnValues.proposalId}</li>})}
+    </ul>
+   </>
   );
 };

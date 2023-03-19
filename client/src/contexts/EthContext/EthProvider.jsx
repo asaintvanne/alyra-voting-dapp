@@ -25,18 +25,17 @@ function EthProvider({ children }) {
         }
         let workflowStatus =  await contract.methods.workflowStatus().call({ from: accounts[0] });
         let owner =  await contract.methods.owner().call({ from: accounts[0] });
+        
         let isRegistered = false;
-        try{
+        try {
          isRegistered = await contract.methods.getVoter(accounts[0]).call({ from: accounts[0] });
-
-        }catch(e)
-        {
-          console.log(e)
+        } catch(e) {
+          
         }
   
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract, txhash, workflowStatus, owner , isRegistered }
+          data: { artifact, web3, accounts, networkID, contract, txhash, workflowStatus, owner, isRegistered }
         });
       }
     }, []);
