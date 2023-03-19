@@ -1,9 +1,15 @@
+import useEth from "../../contexts/EthContext/useEth";
+import * as WorflowStatus from "../models/WorflowStatus";
+
 function NoRegisteredVoter() {
-    return (
-      <>
-        You are not registered. You must ask the admin to register you.
-      </>
-    );
-  }
+  const { state: { workflowStatus } } = useEth();
+
+  return (
+    <>
+      Vous n'êtes pas enregistré.
+      { workflowStatus === WorflowStatus.RegisteringVoters ? " Vous pouvez demander à l'administrateur de vous enregistrer." : " Il n'est plus possible de participer au vote." }
+    </>
+  );
+}
   
-  export default NoRegisteredVoter;
+export default NoRegisteredVoter;

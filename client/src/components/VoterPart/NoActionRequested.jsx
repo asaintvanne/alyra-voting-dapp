@@ -1,7 +1,7 @@
 function NoActionRequested() {
     return (
       <>
-        No action is required on this status, please wait
+        Aucune action n'est demandée lors de cette phase.
       </>
     );
   }

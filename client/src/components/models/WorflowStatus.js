@@ -8,17 +8,17 @@ export const VotesTallied = '5';
 export const getWorkflowStatus = (status) => {
     switch (status) {
         case RegisteringVoters:
-            return 'Registering Voters';
+            return 'Enregistrement des votants';
         case ProposalsRegistrationStarted:
-            return 'Proposals Registration Started';
+            return 'Soumission des propositions';
         case ProposalsRegistrationEnded:
-            return 'Proposals Registration Ended';
+            return 'Fin de soumission des propositions';
         case VotingSessionStarted:
-            return 'Voting Session Started';
+            return 'Vote en cours';
         case VotingSessionEnded:
-            return 'Voting Session Ended';
+            return 'Vote terminé';
         case VotesTallied:
-            return 'Votes Tallied';
+            return 'Dépouillement';
         default:
             return 'Unknown';
     }
