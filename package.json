@@ -3,12 +3,15 @@
     "version": "0.1.0",
     "description": "Truffle project with SimpleStorage contract",
     "scripts": {
-        "migrate": "cd truffle && truffle migrate --network development --reset && cd ..",
+        "migrate": "cd truffle && truffle migrate --network development && cd ..",
+        "deploy": "cd truffle && truffle migrate --network mumbai && cd ..",
         "dev": "cd client && npm run start && cd ..",
-        "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'"
+        "blockchain-local": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'"
     },
     "dependencies": {
-        "@openzeppelin/contracts": "^4.8.2"
+        "@openzeppelin/contracts": "^4.8.2",
+        "@truffle/hdwallet-provider": "^2.1.9",
+        "dotenv": "^16.0.3"
     },
     "devDependencies": {
         "@digix/doxity": "^0.5.2"
