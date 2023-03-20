@@ -3,13 +3,10 @@ import useEth from "../../../contexts/EthContext/useEth";
 import { addressCut } from "../../../libs/address_cut.js"
 
 export const VotingEvents = () => {
-  const {
-    state: { contract, web3, txhash },
-  } = useEth();
+  const { state: { contract, web3, txhash } } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
   
-
   useEffect(() => {
     (async function () {
       const deployTx = await web3.eth.getTransaction(txhash);
@@ -27,11 +24,9 @@ export const VotingEvents = () => {
         .on("data", (event) => {
           setNewEvents([...newEvents, event]);
         })
-        .on("changed", (changed) => console.log(changed))
-        .on("error", (err) => console.log(err))
-        .on("connected", (str) => console.log(str));
+        .on("error", (err) => console.log(err));
     })();
-  }, [contract]);
+  }, []);
 
   return (
     <>

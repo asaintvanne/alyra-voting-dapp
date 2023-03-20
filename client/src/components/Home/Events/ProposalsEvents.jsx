@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { actions } from "../../../contexts/EthContext";
 import useEth from "../../../contexts/EthContext/useEth";
 
 export const ProposalsEvents = () => {
-  const { state: { contract } } = useEth();
+  const { state: { contract , web3, txhash} } = useEth();
   const [oldEvents, setOldEvents] = useState([]);
   const [newEvents, setNewEvents] = useState([]);
 
   useEffect(() => {
     (async function () {
+      const deployTx = await web3.eth.getTransaction(txhash);
       let oldEvents = await contract.getPastEvents("ProposalRegistered", {
-        fromBlock: 0,
+        fromBlock: deployTx.blockNumber,
         toBlock: "latest",
       });
       console.log(oldEvents)
@@ -19,22 +19,19 @@ export const ProposalsEvents = () => {
       contract.events
         .ProposalRegistered({ fromBlock: "latest" })
         .on("data", (event) => {
-          console.log(event)
           setNewEvents((currentEvents) => [...currentEvents,event]);
         })
-        .on("changed", (changed) => console.log(changed))
-        .on("error", (err) => console.log(err))
-        .on("connected", (str) => console.log(str));
+        .on("error", (err) => console.log(err));
     })();
   }, []);
 
   return (
    <>
     <h4>Propositions</h4>
-    <div>
-      {oldEvents && oldEvents.map((event, i) => { return <div key={event.returnValues.proposalId}>{event.returnValues.proposalId}</div>})}
-      {newEvents && newEvents.map((event, i) => { return <div key={event.returnValues.proposalId}>{event.returnValues.proposalId}</div>})}
-    </div>
+    <ul>
+      {oldEvents && oldEvents.map((event, i) => { return <li key={i}>{event.returnValues.proposalId}</li>})}
+      {newEvents && newEvents.map((event, i) => { return <li key={i}>{event.returnValues.proposalId}</li>})}
+    </ul>
    </>
   );
 };
