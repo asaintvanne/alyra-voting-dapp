@@ -1,24 +1,30 @@
 # Voting system by Adrien
 
-Notre projet est un système de vote en ligne. Il permet à un utilisateur de voter pour un candidat et de voir les résultats en temps réel.
-
+Notre projet est un système de vote en ligne. Il permet à des utilisateurs de soumettre des propositions, de voter pour ces propositions et découvrir les résultats.
 
 ## Deploiement
+La dApp est déployée sur Vercel, et le smart contract de Voting sur Mumbai
 Le smart contract Voting est deployé sur mumbai (adresse : )
 
-## Utilisation
-Pour utiliser le système de vote :  <br />
-    1 - En tant qu'admin :  <br />
-  - On peut autoriser des voteurs en ajoutant leur adresse <br />
-  - Faire avancer le processus de vote  <br /><br />
-En tant que voteur :  <br />
-     Si un admin vous a ajouté vous pourrez : <br />
-  - proposer une "proposal" <br />
-  - voter pour une proposal (attention vous ne pouvez votez qu'une fois reflechissez bien ;) <br />
-  - voir les résultats <br />
+## Démonstration
 
-## Répartition du travail 
-On a d'abord commencé tout les 2 de notre coté à prendre en main truffle box et fait les amelioration sur le smart contract Voting. <br />
-Puis on a commencé à travailler ensemble sur le front end. <br />
-Adrien R a commencé la partie Admin et Adrien S a commencé la partie Voteur. <br />
-On a ensuite avancé sur les deux parties en parallèle. <br />
+La vidéo de démonstration est consultable [ici](https://e.pcloud.link/publink/show?code=XZGlahZEQcBrmYLIHb48wAMb4uYIRkHDeYV)
+
+## Utilisation
+
+- En tant qu'admininistrateur
+  - Autoriser des votants en ajoutant leur adresse
+  - Faire avancer le processus de vote
+- En tant que votant :
+  - Soumettre une proposition (plusieurs propositions autorisées)
+  - Voter pour une proposition (un seul vote autorisé)
+  - Consulter les résultats
+  
+Les invités ne peuvent pas agir sur l'application.
+
+## Auteurs et répartition du travail
+- Adrien R
+- Adrien S
+
+Nous avons commencé tous les deux de notre coté à prendre en main truffle box et faire les amélioration sur le smart contract Voting. Puis nous avons travaillé ensemble sur le front end. Adrien R a pris en charge la partie Administration et Adrien S la partie Voteur. Nous avons ensuite réuni notre travail puis avancé en parallèle sur des tâches plus globales.
+
