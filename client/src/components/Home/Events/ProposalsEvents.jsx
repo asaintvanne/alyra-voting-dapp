@@ -13,13 +13,13 @@ export const ProposalsEvents = () => {
         fromBlock: deployTx.blockNumber,
         toBlock: "latest",
       });
-
+      console.log(oldEvents)
       setOldEvents(oldEvents);
 
       contract.events
         .ProposalRegistered({ fromBlock: "latest" })
         .on("data", (event) => {
-          setNewEvents([...newEvents, event]);
+          setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("error", (err) => console.log(err));
     })();
