@@ -20,7 +20,7 @@ export const VotingEvents = () => {
     setOldEvents(oldEvents);
 
       await contract.events
-        .Voted({ fromBlock: "earliest" })
+        .Voted({ fromBlock: "latest" })
         .on("data", (event) => {
           setNewEvents([...newEvents, event]);
         })

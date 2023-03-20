@@ -71,12 +71,12 @@ function Vote () {
 	
 				})
       })  
-				.catch(error => {
-          toast.error("Impossible de récupérer la liste des propositions", {
-            position: toast.POSITION.TOP_LEFT
-          });
-				})
-			;
+      .catch(error => {
+        toast.error("Impossible de récupérer la liste des propositions", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      })
+    ;
 	}
 
   useEffect(() => {
