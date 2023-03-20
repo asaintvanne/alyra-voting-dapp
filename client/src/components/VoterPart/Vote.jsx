@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import { toast } from 'react-toastify';
 
@@ -83,13 +83,13 @@ function Vote () {
 			const deployTx = await web3.eth.getTransaction(txhash)
 			contract.getPastEvents('ProposalRegistered', { fromBlock: deployTx.blockNumber, toBlock: 'latest'})
 				.then(proposalRegisteredEvents => {
-					setProposalList(proposalRegisteredEvents.map(async (item) => {
-            const prop = {id: item.returnValues.proposalId};
-            await getProposal(prop);
-            console.log(prop);
-            return prop;
-          }));
+          let newProposalList = [];
+          proposalRegisteredEvents.forEach(async (item) => {
+            newProposalList.push(await getProposal({id: item.returnValues.proposalId}));
+            setProposalList(newProposalList);
+	
 				})
+      })  
 				.catch(error => {
           toast.error("Impossible de récupérer la liste des propositions", {
             position: toast.POSITION.TOP_LEFT
@@ -99,7 +99,11 @@ function Vote () {
 	}
 
 	hasAlreadyVoted();
-	getProposalList();
+
+  useEffect(() => {
+    getProposalList();
+  },[])
+
 
   return (
       <>
@@ -109,7 +113,7 @@ function Vote () {
               <select id="select_proposition" onChange={handleInputProposalIdChange}>
                 <option value="">Choisir une proposition</option>
                 {proposalList.map((proposalId) => (
-                  <option key={proposalId} value={proposalId}>{proposalId}</option>
+                  <option key={proposalId.id} value={proposalId.id}>{proposalId.description}</option>
                 ))}
               </select>
             </div>

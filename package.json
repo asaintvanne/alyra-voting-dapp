@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Truffle project with SimpleStorage contract",
     "scripts": {
-        "migrate": "cd truffle && truffle migrate --network development && cd ..",
+        "migrate": "cd truffle && truffle migrate --network development --reset && cd ..",
         "dev": "cd client && npm run start && cd ..",
         "blockchain": "ganache -m 'candy maple cake sugar pudding cream honey rich smooth crumble sweet treat'"
     },
