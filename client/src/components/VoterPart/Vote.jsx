@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 function Vote () {
   const { state: { contract, web3, txhash, accounts } } = useEth();
   const [hasVoted, setHasVoted] = useState(false);
-  const [inputProposalDescription, setInputProposalDescription] = useState("");
   const [inputVoteProposalId, setInputVoteProposalId] = useState("");
   const [proposalList, setProposalList] = useState([]);
 
@@ -40,26 +39,8 @@ function Vote () {
   const handleInputProposalIdChange = e => {
     if (/^\d+$|^$/.test(e.target.value)) {
       setInputVoteProposalId(e.target.value);
-      getCurrentProposal(e.target.value);
     }
   };
-
-  const getCurrentProposal = async (proposalId) => {
-    if (proposalId !== "") {
-        contract.methods.getOneProposal(proposalId).call({ from: accounts[0] })
-					.then(result => {
-						setInputProposalDescription(result.description);
-					})
-					.catch(error => {
-            toast.error("Impossible de récupérer le libellé de la proposition", {
-              position: toast.POSITION.TOP_LEFT
-            });
-					})
-				;
-    } else {
-      setInputProposalDescription("");
-    }
-	};
 
 	const hasAlreadyVoted = async () => {
 		contract.methods.getVoter(accounts[0]).call({ from: accounts[0] })
@@ -98,12 +79,10 @@ function Vote () {
 			;
 	}
 
-	hasAlreadyVoted();
-
   useEffect(() => {
+    hasAlreadyVoted();
     getProposalList();
   },[])
-
 
   return (
       <>
@@ -116,12 +95,6 @@ function Vote () {
                   <option key={proposalId.id} value={proposalId.id}>{proposalId.description}</option>
                 ))}
               </select>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col">
-              <input id="input_proposition" type="text" placeholder="Sélectionnez une proposition" value={inputProposalDescription} disabled="disabled" />
             </div>
           </div>
 
