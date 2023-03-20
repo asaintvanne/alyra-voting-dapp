@@ -13,12 +13,13 @@ export const ProposalsEvents = () => {
         fromBlock: 0,
         toBlock: "latest",
       });
-
+      console.log(oldEvents)
       setOldEvents(oldEvents);
 
       contract.events
         .ProposalRegistered({ fromBlock: "latest" })
         .on("data", (event) => {
+          console.log(event)
           setNewEvents((currentEvents) => [...currentEvents,event]);
         })
         .on("changed", (changed) => console.log(changed))
@@ -30,10 +31,10 @@ export const ProposalsEvents = () => {
   return (
    <>
     <h4>Propositions</h4>
-    <ul>
-      {oldEvents && oldEvents.map((event, i) => { return <li key={event.returnValues.proposalId}>{event.returnValues.proposalId}</li>})}
-      {newEvents && newEvents.map((event, i) => { return <li key={event.returnValues.proposalId}>{event.returnValues.proposalId}</li>})}
-    </ul>
+    <div>
+      {oldEvents && oldEvents.map((event, i) => { return <div key={event.returnValues.proposalId}>{event.returnValues.proposalId}</div>})}
+      {newEvents && newEvents.map((event, i) => { return <div key={event.returnValues.proposalId}>{event.returnValues.proposalId}</div>})}
+    </div>
    </>
   );
 };
