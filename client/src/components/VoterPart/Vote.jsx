@@ -73,11 +73,22 @@ function Vote () {
 			})
 	};
 	
+  async function getProposal(prop) {
+    const proposal = await contract.methods.getOneProposal(prop.id).call({ from: accounts[0] });
+    prop.description = proposal.description;
+    return prop;
+  }
+	
 	const getProposalList = async () => {
 			const deployTx = await web3.eth.getTransaction(txhash)
 			contract.getPastEvents('ProposalRegistered', { fromBlock: deployTx.blockNumber, toBlock: 'latest'})
 				.then(proposalRegisteredEvents => {
-					setProposalList(proposalRegisteredEvents.map((item) => item.returnValues.proposalId));
+					setProposalList(proposalRegisteredEvents.map(async (item) => {
+            const prop = {id: item.returnValues.proposalId};
+            await getProposal(prop);
+            console.log(prop);
+            return prop;
+          }));
 				})
 				.catch(error => {
           toast.error("Impossible de récupérer la liste des propositions", {
